@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello {{ controller_name }}!{% endblock %}
+{% block title %} {{ controller_name }} {% endblock %}
 
 {% block body %}
 <style>
@@ -9,9 +9,50 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <h1> {{ controller_name }} ✅</h1>
 
-    This friendly message is coming from:
+    <strong> Dispute stages, status and actions </strong>
+    <table>
+        <th>
+            <td>stage</td>
+            <td>status</td>
+            <td>actions</td>
+        </th>
+        <tr>
+            <td>Inquiry or Claim</td>
+            <td>OPEN, UNDER_REVIEW, RESOLVED, OTHER</td>
+            <td>[get] /v1/customer/disputes,
+                [get] /v1/customer/disputes/{dispute-id}</td>
+        </tr>
+        <tr>
+            <td>Inquiry</td>
+            <td>INQUIRY ( dispute_lifecyle_stage: INQUIRY )</td>
+            <td>[post] /v1/customer/disputes/{dispute_id}/send-message, 
+                [post] /v1/customer/disputes/{dispute_id}/make-offer, 
+                [post] /v1/customer/disputes/{dispute_id}/escalate</td>
+        </tr>
+        <tr>
+            <td>Claim</td>
+            <td>WAITING_FOR_MERCHANT_RESPONSE, WAITING_FOR_BUYER_RESPONSE</td>
+            <td>[post], /v1/customer/disputes/{dispute_id}/provide-evidence</td>
+        </tr>
+        <tr>
+            <td>Claim</td>
+            <td>RESOLVED (in cusomter's favor)</td>
+            <td>[post] /v1/customer/disputes/{dispute_id}/appeal ( can only appeal with responded HATEOAS links )</td>
+        </tr>
+        <tr>
+            <td>Claim</td>
+            <td>UNDER_REVIEW</td>
+            <td>[post] /v1/customer/disputes/{dispute_id}/require-evidence (sandbox only), 
+                [post] /v1/customer/disputes/{dispute_id}/adjudicate (sandbox only)</td>
+        </tr>
+        <tr>
+            <td>Any</td>
+            <td>ANY</td>
+            <td>[post] /v1/customer/disputes/{dispute_id}/accept-claim</td>
+        </tr>
+    </table>
     <ul>
         <li>Your controller at <code><a href="{{ 'src/Controller/DefaultController.php'|file_link(0) }}">src/Controller/DefaultController.php</a></code></li>
         <li>Your template at <code><a href="{{ 'templates/default/index.html.twig'|file_link(0) }}">templates/default/index.html.twig</a></code></li>
